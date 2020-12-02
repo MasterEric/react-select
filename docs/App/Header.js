@@ -5,7 +5,7 @@ import { Component, type Node } from 'react';
 import { jsx } from '@emotion/core';
 import { withRouter } from 'react-router-dom';
 
-import Select from 'react-select-oss';
+import Select from 'react-select';
 import type { RouterProps } from '../types';
 import GitHubButton from './GitHubButton';
 
@@ -107,7 +107,7 @@ const Container = props => (
 type HeaderProps = RouterProps & { children: Node };
 type HeaderState = { contentHeight: 'auto' | number, stars: number };
 
-const apiUrl = 'https://api.github.com/repos/react-select-oss/react-select';
+const apiUrl = 'https://api.github.com/repos/react-select/react-select';
 
 class Header extends Component<HeaderProps, HeaderState> {
   nav: HTMLElement;
@@ -215,7 +215,7 @@ const Content = ({ onChange, stars }) => (
       <div css={{ flex: 1, alignItems: 'center' }}>
         <GitHubButton
           count={stars}
-          repo="https://github.com/react-select-oss/react-select"
+          repo="https://github.com/react-select/react-select"
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select, { components } from 'react-select-oss';
+import Select, { components } from 'react-select';
 import { colourOptions, groupedOptions } from '../data';
 
 const groupStyles = {

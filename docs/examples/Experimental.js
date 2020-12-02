@@ -5,8 +5,8 @@ import { jsx } from '@emotion/core';
 import moment from 'moment';
 import chrono from 'chrono-node';
 
-import Select from 'react-select-oss';
-import { components as SelectComponents } from 'react-select-oss';
+import Select from 'react-select';
+import { components as SelectComponents } from 'react-select';
 
 const createOptionForDate = d => {
   const date = moment.isMoment(d) ? d : moment(d);

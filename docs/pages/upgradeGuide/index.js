@@ -249,7 +249,7 @@ that implements the same options previously available as props to react-select.
 For example:
 
 ~~~js
-import Select, { createFilter } from 'react-select-oss';
+import Select, { createFilter } from 'react-select';
 
 const customFilter = createFilter({
   ignoreCase?: boolean,

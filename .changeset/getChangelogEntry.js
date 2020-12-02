@@ -6,7 +6,7 @@ const getReleaseLine = async (changeset, type) => {
     .split('\n')
     .map(l => l.trimRight());
   let { links } = await getInfo({
-    repo: 'react-select-oss/react-select',
+    repo: 'react-select/react-select',
     commit: changeset.commit,
   });
   return `- ${links.commit}${links.pull === null ? '' : ` ${links.pull}`}${

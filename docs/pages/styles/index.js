@@ -9,7 +9,7 @@ import {
   StyleCompositionExample,
 } from '../../examples';
 import { ColorSample } from '../../styled-components';
-import { defaultTheme } from 'react-select-oss';
+import { defaultTheme } from 'react-select';
 
 export default function Styles() {
   return (

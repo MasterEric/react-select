@@ -4,13 +4,13 @@ import { Component } from 'react';
 import CodeSandboxer from 'react-codesandboxer';
 import { CodeBlock } from './markdown/renderer';
 import pkg from '../packages/react-select/package.json';
-import { defaultTheme } from 'react-select-oss';
+import { defaultTheme } from 'react-select';
 import Svg from './Svg';
 
 const { colors } = defaultTheme;
 
 const gitInfo = {
-  account: 'react-select-oss',
+  account: 'react-select',
   repository: 'react-select',
   branch: 'master',
   host: 'github',

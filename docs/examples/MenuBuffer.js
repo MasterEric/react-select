@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select-oss';
+import Select from 'react-select';
 
 import { colourOptions } from '../data';
 

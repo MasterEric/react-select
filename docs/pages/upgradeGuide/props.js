@@ -2,7 +2,7 @@
 
 import React, { Component, Fragment } from 'react';
 
-import Select, { components } from 'react-select-oss';
+import Select, { components } from 'react-select';
 import md from '../../markdown/renderer';
 
 const Code = ({ children }) => <code>{children}</code>;

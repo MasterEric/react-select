@@ -22,7 +22,7 @@ export default function Home() {
 
   This is intended to be the authoritative fork of react-select while the original react-select is not being actively maintained. The end goal is that the original react-select becomes maintained again and this repository can be archived.
 
-  This fork will be released under the npm package name \`react-select-oss\`.
+  This fork will be released under the npm package name \`react-select\`.
 
   ---
 
@@ -34,7 +34,7 @@ export default function Home() {
 
   If you're coming from react-select v1, check out the [Upgrade Guide](/upgrade-guide).
 
-  To contribute, or open an issue, check out the [source code on GitHub](https://github.com/react-select-oss/react-select).
+  To contribute, or open an issue, check out the [source code on GitHub](https://github.com/react-select/react-select).
 
   ${(
     <ExampleWrapper
@@ -58,17 +58,17 @@ export default function Home() {
 
   ## Getting Started
 
-  Start by installing \`react-select-oss\`
+  Start by installing \`react-select\`
 
   ~~~bash
-  yarn add react-select-oss
+  yarn add react-select
   ~~~
 
   Import the default export and render in your component:
 
   ~~~jsx
   import React, { Component } from 'react'
-  import Select from 'react-select-oss'
+  import Select from 'react-select'
 
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -97,7 +97,7 @@ export default function Home() {
   If no arguments are passed, built-in components are wrapped instead.
 
   ~~~jsx
-  import makeAnimated from 'react-select-oss/animated';
+  import makeAnimated from 'react-select/animated';
   ~~~
 
   Remove the values below to see them in action.
@@ -142,7 +142,7 @@ export default function Home() {
   Use the Async component to load options from a remote source as the user types.
 
   ~~~jsx
-  import AsyncSelect from 'react-select-oss/async';
+  import AsyncSelect from 'react-select/async';
   ~~~
 
   ${(
@@ -171,7 +171,7 @@ export default function Home() {
   The Creatable component enables users to create new options along with choosing existing options.
 
   ~~~jsx
-  import Creatable from 'react-select-oss/creatable';
+  import Creatable from 'react-select/creatable';
   ~~~
 
   ${(

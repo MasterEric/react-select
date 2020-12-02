@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import CreatableSelect from 'react-select-oss/creatable';
+import CreatableSelect from 'react-select/creatable';
 
 const components = {
   DropdownIndicator: null,

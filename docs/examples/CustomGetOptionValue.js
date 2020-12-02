@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Select from 'react-select-oss';
+import Select from 'react-select';
 import { dogOptions } from '../data';
 
 export default function CustomGetOptionValue() {

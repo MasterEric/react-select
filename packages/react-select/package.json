@@ -2,12 +2,12 @@
   "name": "react-select",
   "version": "3.1.1",
   "description": "A Select control built with and for ReactJS",
-  "main": "dist/react-select-oss.cjs.js",
-  "module": "dist/react-select-oss.esm.js",
+  "main": "dist/react-select.cjs.js",
+  "module": "dist/react-select.esm.js",
   "sideEffects": false,
   "author": "Jed Watson",
   "license": "MIT",
-  "repository": "https://github.com/react-select-oss/react-select/tree/master/packages/react-select",
+  "repository": "https://github.com/react-select/react-select/tree/master/packages/react-select",
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "@emotion/cache": "^10.0.9",
@@ -59,7 +59,7 @@
     ]
   },
   "browser": {
-    "./dist/react-select-oss.cjs.js": "./dist/react-select-oss.browser.cjs.js",
-    "./dist/react-select-oss.esm.js": "./dist/react-select-oss.browser.esm.js"
+    "./dist/react-select.cjs.js": "./dist/react-select.browser.cjs.js",
+    "./dist/react-select.esm.js": "./dist/react-select.browser.esm.js"
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select, { components } from 'react-select-oss';
+import Select, { components } from 'react-select';
 import { colourOptions } from '../data';
 
 const SingleValue = ({ children, ...props }) => (
