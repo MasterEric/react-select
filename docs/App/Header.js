@@ -5,10 +5,9 @@ import { Component, type Node } from 'react';
 import { jsx } from '@emotion/core';
 import { withRouter } from 'react-router-dom';
 
-import Select from 'react-select';
+import Select from 'react-select-oss';
 import type { RouterProps } from '../types';
 import GitHubButton from './GitHubButton';
-import TwitterButton from './TwitterButton';
 
 const smallDevice = '@media (max-width: 769px)';
 const largeDevice = '@media (min-width: 770px)';
@@ -108,21 +107,15 @@ const Container = props => (
 type HeaderProps = RouterProps & { children: Node };
 type HeaderState = { contentHeight: 'auto' | number, stars: number };
 
-const apiUrl = 'https://api.github.com/repos/jedwatson/react-select';
+const apiUrl = 'https://api.github.com/repos/react-select-oss/react-select';
 
 class Header extends Component<HeaderProps, HeaderState> {
   nav: HTMLElement;
   content: HTMLElement;
   state = { contentHeight: 'auto', stars: 0 };
   componentDidMount() {
+    this.setState({ contentHeight: this.content.scrollHeight });
     this.getStarCount();
-  }
-  UNSAFE_componentWillReceiveProps({ location }: HeaderProps) {
-    const valid = ['/', '/home'];
-    const shouldCollapse = !valid.includes(this.props.location.pathname);
-    if (location.pathname !== this.props.location.pathname && shouldCollapse) {
-      this.toggleCollapse();
-    }
   }
   getStarCount = () => {
     fetch(apiUrl)
@@ -138,10 +131,6 @@ class Header extends Component<HeaderProps, HeaderState> {
   isHome = (props = this.props) => {
     const valid = ['/', '/home'];
     return valid.includes(props.location.pathname);
-  };
-  toggleCollapse = () => {
-    const contentHeight = this.content.scrollHeight;
-    this.setState({ contentHeight });
   };
   getContent = ref => {
     if (!ref) return;
@@ -226,9 +215,8 @@ const Content = ({ onChange, stars }) => (
       <div css={{ flex: 1, alignItems: 'center' }}>
         <GitHubButton
           count={stars}
-          repo="https://github.com/jedwatson/react-select"
+          repo="https://github.com/react-select-oss/react-select"
         />
-        <TwitterButton />
       </div>
     </div>
     <div

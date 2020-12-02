@@ -20,6 +20,12 @@ export default function Home() {
   return md`
   # Welcome
 
+  This is intended to be the authoritative fork of react-select while the original react-select is not being actively maintained. The end goal is that the original react-select becomes maintained again and this repository can be archived.
+
+  This fork will be released under the npm package name \`react-select-oss\`.
+
+  ---
+
   Each of the examples below is an interactive example of react-select.
 
   See the source or open the examples on codesandbox using the buttons that appear when you hover over each select below.
@@ -28,7 +34,7 @@ export default function Home() {
 
   If you're coming from react-select v1, check out the [Upgrade Guide](/upgrade-guide).
 
-  To contribute, or open an issue, check out the [source code on GitHub](https://github.com/JedWatson/react-select).
+  To contribute, or open an issue, check out the [source code on GitHub](https://github.com/react-select-oss/react-select).
 
   ${(
     <ExampleWrapper
@@ -52,17 +58,17 @@ export default function Home() {
 
   ## Getting Started
 
-  Start by installing \`react-select\`
+  Start by installing \`react-select-oss\`
 
   ~~~bash
-  yarn add react-select
+  yarn add react-select-oss
   ~~~
 
   Import the default export and render in your component:
 
   ~~~jsx
   import React, { Component } from 'react'
-  import Select from 'react-select'
+  import Select from 'react-select-oss'
 
   const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -91,7 +97,7 @@ export default function Home() {
   If no arguments are passed, built-in components are wrapped instead.
 
   ~~~jsx
-  import makeAnimated from 'react-select/animated';
+  import makeAnimated from 'react-select-oss/animated';
   ~~~
 
   Remove the values below to see them in action.
@@ -136,7 +142,7 @@ export default function Home() {
   Use the Async component to load options from a remote source as the user types.
 
   ~~~jsx
-  import AsyncSelect from 'react-select/async';
+  import AsyncSelect from 'react-select-oss/async';
   ~~~
 
   ${(
@@ -165,7 +171,7 @@ export default function Home() {
   The Creatable component enables users to create new options along with choosing existing options.
 
   ~~~jsx
-  import Creatable from 'react-select/creatable';
+  import Creatable from 'react-select-oss/creatable';
   ~~~
 
   ${(

@@ -301,6 +301,7 @@ type State = {
   focusedValue: OptionType | null,
   menuOptions: MenuOptions,
   selectValue: OptionsType,
+  inputIsHiddenAfterUpdate: ?boolean,
 };
 
 type ElRef = ElementRef<*>;
@@ -318,6 +319,7 @@ export default class Select extends Component<Props, State> {
     isFocused: false,
     menuOptions: { render: [], focusable: [] },
     selectValue: [],
+    inputIsHiddenAfterUpdate: undefined,
   };
 
   // Misc. Instance Properties
@@ -327,11 +329,9 @@ export default class Select extends Component<Props, State> {
   isComposing: boolean = false;
   clearFocusValueOnUpdate: boolean = false;
   commonProps: any; // TODO
-  components: SelectComponents;
   hasGroups: boolean = false;
   initialTouchX: number = 0;
   initialTouchY: number = 0;
-  inputIsHiddenAfterUpdate: ?boolean;
   instancePrefix: string = '';
   openAfterFocus: boolean = false;
   scrollToFocusedOptionOnUpdate: boolean = false;
@@ -363,8 +363,6 @@ export default class Select extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     const { value } = props;
-    this.cacheComponents = memoizeOne(this.cacheComponents, isEqual).bind(this);
-    this.cacheComponents(props.components);
     this.instancePrefix =
       'react-select-' + (this.props.instanceId || ++instanceId);
 
@@ -400,10 +398,15 @@ export default class Select extends Component<Props, State> {
       this.focusInput();
     }
   }
+  static getDerivedStateFromProps(props: Props, state: State) {
+    // some updates should toggle the state of the input visibility
+    const { inputIsHiddenAfterUpdate } = state;
+    return inputIsHiddenAfterUpdate != null
+      ? { inputIsHidden: inputIsHiddenAfterUpdate, inputIsHiddenAfterUpdate: undefined }
+      : null;
+  }
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { options, value, menuIsOpen, inputValue } = this.props;
-    // re-cache custom components
-    this.cacheComponents(nextProps.components);
     // rebuild the menu options
     if (
       nextProps.value !== value ||
@@ -418,13 +421,6 @@ export default class Select extends Component<Props, State> {
       const focusedValue = this.getNextFocusedValue(selectValue);
       const focusedOption = this.getNextFocusedOption(menuOptions.focusable);
       this.setState({ menuOptions, selectValue, focusedOption, focusedValue });
-    }
-    // some updates should toggle the state of the input visibility
-    if (this.inputIsHiddenAfterUpdate != null) {
-      this.setState({
-        inputIsHidden: this.inputIsHiddenAfterUpdate,
-      });
-      delete this.inputIsHiddenAfterUpdate;
     }
   }
   componentDidUpdate(prevProps: Props) {
@@ -455,9 +451,6 @@ export default class Select extends Component<Props, State> {
     this.stopListeningToTouch();
     document.removeEventListener('scroll', this.onScroll, true);
   }
-  cacheComponents = (components: SelectComponents) => {
-    this.components = defaultComponents({ components });
-  };
   // ==============================
   // Consumer Handlers
   // ==============================
@@ -511,12 +504,12 @@ export default class Select extends Component<Props, State> {
 
     // only scroll if the menu isn't already open
     this.scrollToFocusedOptionOnUpdate = !(isFocused && this.menuListRef);
-    this.inputIsHiddenAfterUpdate = false;
 
     this.setState({
       menuOptions,
       focusedValue: null,
       focusedOption: menuOptions.focusable[openAtIndex],
+      inputIsHiddenAfterUpdate: false,
     }, () => {
       this.onMenuOpen();
       this.announceAriaLiveContext({ event: 'menu' });
@@ -623,7 +616,7 @@ export default class Select extends Component<Props, State> {
     const { closeMenuOnSelect, isMulti } = this.props;
     this.onInputChange('', { action: 'set-value' });
     if (closeMenuOnSelect) {
-      this.inputIsHiddenAfterUpdate = !isMulti;
+      this.setState({ inputIsHiddenAfterUpdate: !isMulti });
       this.onMenuClose();
     }
     // when the select value should change, we should reset focusedValue
@@ -820,6 +813,12 @@ export default class Select extends Component<Props, State> {
     return option && option.key;
   };
 
+  getComponentsFromComponentsProp = memoizeOne(
+    (components: SelectComponents) => defaultComponents({ components }),
+    isEqual
+  );
+  getComponents = () => this.getComponentsFromComponentsProp(this.props.components);
+
   // ==============================
   // Helpers
   // ==============================
@@ -958,7 +957,7 @@ export default class Select extends Component<Props, State> {
     const { isMulti, menuIsOpen } = this.props;
     this.focusInput();
     if (menuIsOpen) {
-      this.inputIsHiddenAfterUpdate = !isMulti;
+      this.setState({ inputIsHiddenAfterUpdate: !isMulti });
       this.onMenuClose();
     } else {
       this.openMenu('first');
@@ -1102,7 +1101,7 @@ export default class Select extends Component<Props, State> {
 
   handleInputChange = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
     const inputValue = event.currentTarget.value;
-    this.inputIsHiddenAfterUpdate = false;
+    this.setState({ inputIsHiddenAfterUpdate: false });
     this.onInputChange(inputValue, { action: 'input-change' });
     if (!this.props.menuIsOpen) {
       this.onMenuOpen();
@@ -1113,7 +1112,7 @@ export default class Select extends Component<Props, State> {
     if (this.props.onFocus) {
       this.props.onFocus(event);
     }
-    this.inputIsHiddenAfterUpdate = false;
+    this.setState({ inputIsHiddenAfterUpdate: false });
     this.announceAriaLiveContext({
       event: 'input',
       context: { isSearchable, isMulti },
@@ -1237,7 +1236,7 @@ export default class Select extends Component<Props, State> {
         return;
       case 'Escape':
         if (menuIsOpen) {
-          this.inputIsHiddenAfterUpdate = false;
+          this.setState({ inputIsHiddenAfterUpdate: false });
           this.onInputChange('', { action: 'menu-close' });
           this.onMenuClose();
         } else if (isClearable && escapeClearsValue) {
@@ -1416,7 +1415,7 @@ export default class Select extends Component<Props, State> {
       tabIndex,
       form,
     } = this.props;
-    const { Input } = this.components;
+    const { Input } = this.getComponents();
     const { inputIsHidden } = this.state;
 
     const id = inputId || this.getElementId('input');
@@ -1482,7 +1481,7 @@ export default class Select extends Component<Props, State> {
       MultiValueRemove,
       SingleValue,
       Placeholder,
-    } = this.components;
+    } = this.getComponents();
     const { commonProps } = this;
     const {
       controlShouldRenderValue,
@@ -1551,7 +1550,7 @@ export default class Select extends Component<Props, State> {
     );
   }
   renderClearIndicator() {
-    const { ClearIndicator } = this.components;
+    const { ClearIndicator } = this.getComponents();
     const { commonProps } = this;
     const { isDisabled, isLoading } = this.props;
     const { isFocused } = this.state;
@@ -1581,7 +1580,7 @@ export default class Select extends Component<Props, State> {
     );
   }
   renderLoadingIndicator() {
-    const { LoadingIndicator } = this.components;
+    const { LoadingIndicator } = this.getComponents();
     const { commonProps } = this;
     const { isDisabled, isLoading } = this.props;
     const { isFocused } = this.state;
@@ -1599,7 +1598,7 @@ export default class Select extends Component<Props, State> {
     );
   }
   renderIndicatorSeparator() {
-    const { DropdownIndicator, IndicatorSeparator } = this.components;
+    const { DropdownIndicator, IndicatorSeparator } = this.getComponents();
 
     // separator doesn't make sense without the dropdown indicator
     if (!DropdownIndicator || !IndicatorSeparator) return null;
@@ -1617,7 +1616,7 @@ export default class Select extends Component<Props, State> {
     );
   }
   renderDropdownIndicator() {
-    const { DropdownIndicator } = this.components;
+    const { DropdownIndicator } = this.getComponents();
     if (!DropdownIndicator) return null;
     const { commonProps } = this;
     const { isDisabled } = this.props;
@@ -1648,7 +1647,7 @@ export default class Select extends Component<Props, State> {
       LoadingMessage,
       NoOptionsMessage,
       Option,
-    } = this.components;
+    } = this.getComponents();
     const { commonProps } = this;
     const { focusedOption, menuOptions } = this.state;
     const {
@@ -1830,7 +1829,7 @@ export default class Select extends Component<Props, State> {
       IndicatorsContainer,
       SelectContainer,
       ValueContainer,
-    } = this.components;
+    } = this.getComponents();
 
     const { className, id, isDisabled, menuIsOpen } = this.props;
     const { isFocused } = this.state;
